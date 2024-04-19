@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {login, signup, viewUsers, singleUser , deleteUser, editUser}  from "../controllers/todouserController";
+import {login, signup, viewUsers, singleUser , deleteUser, editUser}  from "../modules/todoUser/controllers/todouserController";
 
 const router = express.Router();
 
