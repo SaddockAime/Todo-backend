@@ -14,14 +14,6 @@ app.use("/api", allRoutes);
 
 swaggerSetup(app);
 
-app.get('/test', (req: Request, res: Response) => {
-    res.send('Hello');
-});
-
-app.get("/", (req: Request, res: Response) => {
-    res.json({ message: "Welcome To TODO BackEnd" });
-});
-
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
