@@ -1,9 +1,7 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { comparePassword, encryptPassword, generateToken } from '../../../helpers'
 import { createUser, deleteUserById, findUserByEmail, findUserById, getAllUsers, editUserByUsername } from '../repository/todouserRepo';
 
-const secretKey = 'your-secret-key';
 
 // Login
 export const login = async (req: express.Request, res: express.Response) => {
@@ -18,7 +16,7 @@ export const login = async (req: express.Request, res: express.Response) => {
             });
         }
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        const isPasswordMatch = await comparePassword(password, user.password);
         if (!isPasswordMatch) {
             return res.status(404).json({
                 status: 'fail',
@@ -26,7 +24,7 @@ export const login = async (req: express.Request, res: express.Response) => {
             });
         }
 
-        const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+        const token = generateToken(user._id);
 
         return res.status(200).json({
             status: 'success',
@@ -52,7 +50,7 @@ export const signup = async (req: express.Request, res: express.Response) => {
         if (!username || !email || !password) {
             return res.status(404).json({
                 status: 'fail',
-                message: 'Missing required user credentials',
+                message: 'insert user credentials',
             });
         }
 
@@ -64,7 +62,7 @@ export const signup = async (req: express.Request, res: express.Response) => {
             });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await encryptPassword(password);
         const newUser = await createUser({
             username,
             email,
