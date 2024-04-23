@@ -34,7 +34,6 @@ export const login = async (req: express.Request, res: express.Response) => {
             },
         });
     } catch (error: any) {
-        console.log(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,
@@ -74,7 +73,6 @@ export const signup = async (req: express.Request, res: express.Response) => {
             data: newUser,
         });
     } catch (error: any) {
-        console.log(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,
@@ -91,7 +89,6 @@ export const viewUsers = async (req: express.Request, res: express.Response) => 
             data: allUsers,
         });
     } catch (error: any) {
-        console.log(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,
@@ -115,7 +112,6 @@ export const singleUser = async (req: express.Request, res: express.Response) =>
             data: user,
         });
     } catch (error: any) {
-        console.log(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,
@@ -142,7 +138,6 @@ export const editUser = async (req: express.Request, res: express.Response) => {
             data: updatedUser,
         });
     } catch (error: any) {
-        console.error(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,
@@ -169,7 +164,6 @@ export const deleteUser = async (req: express.Request, res: express.Response) =>
             data: deletedUser,
         });
     } catch (error: any) {
-        console.error(error);
         return res.status(500).json({
             message: error.message,
             code: error.code,

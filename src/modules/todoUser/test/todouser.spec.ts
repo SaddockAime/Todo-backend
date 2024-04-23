@@ -62,15 +62,52 @@ describe("todo user test cases", () => {
         expect(response.body).to.have.property("data");
         expect(response.body.data).to.have.property("username", "Dodo");
         expect(response.body.data).to.have.property("email", "dodo@gmail.com");
-        userId = response._body.data._id
-        console.log(userId)
+        userId = response._body.data._id;
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .post("/api/todousers/signup")
+      .send({
+        username: "Dodo",
+        email: "dodo@gmail.com",
+        password: "dodo_2000"
+      })
+      .end((error, response: any) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .post("/api/todousers/signup")
+      .end((error, response: any) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .post("/api/todousers/login")
+      .send({
+        email: "dodo@gmail.com",
+        password: "dodo_20000000"
+      })
+      .end((error, response: any) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
         done(error);
       });
   });
 
   // Test for single user
   it("Should be able to get a single user by ID", (done) => {
-    // Replace 'userId' with an actual user ID from your database
     router()
       .get(`/api/todousers/singleUser/${userId}`)
       .set("Authorization", `Bearer ${token}`)
@@ -79,14 +116,12 @@ describe("todo user test cases", () => {
         expect(response.body).to.be.an("object");
         expect(response.body).to.have.property("data");
         expect(response.body.data).to.have.property("_id", userId);
-        console.log(error)
         done(error);
       });
   });
 
   // Test for editing user
   it("Should be able to edit a user", (done) => {
-    // Replace 'userId' with an actual user ID from your database
     router()
       .put(`/api/todousers/editUser/${userId}`)
       .set("Authorization", `Bearer ${token}`)
@@ -102,7 +137,6 @@ describe("todo user test cases", () => {
 
   // Test for deleting a user
   it("Should be able to delete a user by ID", (done) => {
-    // Replace 'userId' with an actual user ID from your database
     router()
       .delete(`/api/todousers/deleteUser/${userId}`)
       .set("Authorization", `Bearer ${token}`)
@@ -110,6 +144,54 @@ describe("todo user test cases", () => {
         expect(response).to.have.status(200);
         expect(response.body).to.be.an("object");
         expect(response.body.message).to.be.a("string");
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .delete(`/api/todousers/deleteUser/${userId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .end((error, response) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .post("/api/todousers/login")
+      .send({
+        email: "dodo@gmail.com",
+        password: "dodo_2000"
+      })
+      .end((error, response: any) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
+        done(error);
+      });
+  });
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .get(`/api/todousers/singleUser/${userId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .end((error, response) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
+        done(error);
+      });
+  });
+
+
+  it("Should be able to give an error", (done) => {
+    router()
+      .put(`/api/todousers/editUser/${userId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .end((error, response) => {
+        expect(response).to.have.status(404);
+        expect(response.body).to.be.an("object");
         done(error);
       });
   });
