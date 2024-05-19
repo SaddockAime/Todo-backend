@@ -6,13 +6,30 @@ chai.use(chaiHttp);
 const router = () => chai.request(app);
 
 let messageId = '';
+let token: any  = '';
 
 describe("Todo backend message test cases", () => {
+  it("Should be able to log in an existing user", (done) => {
+    router()
+      .post("/api/todousers/login")
+      .send({
+        email: "saddock@gmail.com",
+        password: "Saddock_2000"
+      })
+      .end((error, response: any) => {
+        expect(response).to.have.status(200);
+        expect(response.body).to.be.an("object");
+        expect(response.body).to.have.property("data");
+        token = response._body.data.token;
+        done(error);
+      });
+  });
 
   // Test for creating message
   it("Should be able to create message", (done) => {
     router()
       .post("/api/todomessage/createMessage")
+      .set("Authorization", `Bearer ${token}`)
       .send({
         name: "Aime getz",
         email: "aime@gmail.com",
@@ -31,6 +48,7 @@ describe("Todo backend message test cases", () => {
   it("Should be able to get all messages", (done) => {
     router()
       .get("/api/todomessage/viewMessages")
+      .set("Authorization", `Bearer ${token}`)
       .end((error, response) => {
         expect(response).to.have.status(200);
         expect(response.body).to.be.a("object");
@@ -44,6 +62,7 @@ describe("Todo backend message test cases", () => {
   it("Should be able to edit a message", (done) => {
     router()
       .put(`/api/todomessage/updateMessage/${messageId}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({ 
         name: "Saddock",
         email: "saddock@gmail.com",
@@ -61,6 +80,7 @@ describe("Todo backend message test cases", () => {
   it("Should be able to delete a message by ID", (done) => {
     router()
       .delete(`/api/todomessage/deleteMessage/${messageId}`)
+      .set("Authorization", `Bearer ${token}`)
       .end((error, response) => {
         expect(response).to.have.status(200);
         expect(response.body).to.be.an("object");
@@ -72,6 +92,7 @@ describe("Todo backend message test cases", () => {
   it("Should be able to give an error", (done) => {
     router()
       .delete(`/api/todomessage/deleteMessage/${messageId}`)
+      .set("Authorization", `Bearer ${token}`)
       .end((error, response) => {
         expect(response).to.have.status(404);
         expect(response.body).to.be.an("object");
@@ -82,12 +103,11 @@ describe("Todo backend message test cases", () => {
   it("Should be able to give an error", (done) => {
     router()
       .put(`/api/todomessage/updateMessage/${messageId}`)
+      .set("Authorization", `Bearer ${token}`)
       .end((error, response) => {
         expect(response).to.have.status(404);
         expect(response.body).to.be.an("object");
         done(error);
       });
   });
-
-
 });

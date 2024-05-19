@@ -1,5 +1,5 @@
 import express from 'express';
-
+import { authentication } from '../middlewares/authentication';
 import { createMessage, viewMessages, deleteMessage, updateMessage } from '../modules/todoMessage/controllers/todomessageController';
 
 const router = express.Router();
@@ -55,7 +55,7 @@ const router = express.Router();
  *       500:
  *         description: Internal Server Error
  */
-router.post("/createMessage", createMessage);
+router.post("/createMessage", authentication, createMessage);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.post("/createMessage", createMessage);
  *       500:
  *         description: Internal Server Error
  */
-router.get("/viewMessages", viewMessages);
+router.get("/viewMessages", authentication, viewMessages);
 
 /**
  * @swagger
@@ -136,7 +136,7 @@ router.get("/viewMessages", viewMessages);
  *       500:
  *         description: Internal Server Error
  */
-router.delete("/deleteMessage/:id", deleteMessage);
+router.delete("/deleteMessage/:id", authentication, deleteMessage);
 
 /**
  * @swagger
@@ -198,6 +198,6 @@ router.delete("/deleteMessage/:id", deleteMessage);
  *       500:
  *         description: Internal Server Error
  */
-router.put("/updateMessage/:id", updateMessage);
+router.put("/updateMessage/:id", authentication, updateMessage);
 
 export default router;
